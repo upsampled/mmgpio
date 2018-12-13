@@ -26,20 +26,11 @@ func main() {
 		log.Fatal("Init Error: " + err.Error())
 	}
 
-	if *seg >= 0 && *seg < 9 {
+	if *seg >= 0 && *seg <= 9 {
 		mm.AllDigsOn()
 		mm.SetDigsSegs(*seg)
 		mm.DeInit()
-	}
-
-	if *run > 0 {
-		mm.SetNumsDots([...]uint32{1, 2, 3, 4}, [...]uint32{0, 1, 0, 0})
-		done := mm.Run(*run)
-		time.Sleep(time.Duration(*dur) * time.Second)
-		mm.Stop()
-		<-done
-		mm.AllDigsOff()
-		mm.DeInit()
+		return
 	}
 
 	if *cnt > 0 && *run > 0 {
@@ -54,6 +45,18 @@ func main() {
 		<-done
 		mm.AllDigsOff()
 		mm.DeInit()
+		return
+	}
+
+	if *run > 0 {
+		mm.SetNumsDots([...]uint32{1, 2, 3, 4}, [...]uint32{0, 1, 0, 0})
+		done := mm.Run(*run)
+		time.Sleep(time.Duration(*dur) * time.Second)
+		mm.Stop()
+		<-done
+		mm.AllDigsOff()
+		mm.DeInit()
+		return
 	}
 
 }
