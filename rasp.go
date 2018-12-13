@@ -17,7 +17,7 @@ const (
 //RaspMMGPIO represents the memory mapped GPIOs of the Radpberry Pi
 type RaspMMGPIO struct {
 	MMFilename string
-	GPIOOffset int
+	GPIOOffset int64
 	MMPageSize int
 	mmfile     *os.File
 	gpios      []int
@@ -28,9 +28,9 @@ type RaspMMGPIO struct {
 //SIZE   4*1024 = we only care about the first 40 (10 *4) Bytes, but mapping the whole page anyhow (believe it is more efficient)
 func NewRaspMMGPIO(rasp BoardType) *RaspMMGPIO {
 	if rasp == RASP_2_3 {
-		return &RaspMMGPIO{"/dev/mem", int(0x3f200000), 4 * 1024, nil, []int{}}
+		return &RaspMMGPIO{"/dev/mem", 0x3f200000, 4 * 1024, nil, []int{}}
 	}
-	return &RaspMMGPIO{"/dev/mem", int(0x20200000), 4 * 1024, nil, []int{}}
+	return &RaspMMGPIO{"/dev/mem", 0x20200000, 4 * 1024, nil, []int{}}
 }
 
 //SetFilename overwrites the memory file (so you can use memgpio instead)
